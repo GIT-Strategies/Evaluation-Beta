@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
             pdf.setFont('Times', 'italic');
             pdf.setFontSize(10);
             pdf.text('Powered by Give it a Try', 40, pdf.internal.pageSize.height - 40);
-            pdf.addImage('https://github.com/GIT-Strategies/Evaluation-Beta/blob/main/GIT%20just%20G%20logo%20white%20background%20(1).png?raw=true', 'PNG', pdf.internal.pageSize.width - 80, pdf.internal.pageSize.height - 60, 40, 40); // Footer logo
+            pdf.addImage("https://github.com/GIT-Strategies/Evaluation-Beta/blob/main/GIT%20just%20G%20logo%20white%20background%20(1).png?raw=true", 'PNG', pdf.internal.pageSize.width - 80, pdf.internal.pageSize.height - 60, 40, 40); // Footer logo
 
             pdf.save(`${playerTitle}-evaluation.pdf`);
         });
