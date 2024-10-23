@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Evaluation Radar Chart</title>
+    <link rel="stylesheet" href="styles_radarsliders2.css">
+</head>
+<body>
+    <!-- Banner with Logo and Title -->
+    <header class="banner">
+        <h1 class="banner-title">Player Evaluation Form</h1>
+        <img src='https://github.com/GIT-Strategies/Evaluation-Beta/blob/main/GIT%20just%20G%20logo%20white%20background%20(1).png?raw=true' alt="Logo" class="logo" />
+    </header>
+
+    <div class="container">
+        <div class="left-section">
+            <input type="text" id="playerName" placeholder="Enter Player Name" />
+            <!-- Date Picker Field -->
+            <input type="date" id="evaluationDate" placeholder="Select Evaluation Date" />
+            <button id="savePlayer">Save Player</button>
+            <div id="feedbackMessage" class="feedback-message"></div>
+        </div>
+        
+        <div class="sliders">
+            <div class="slider-group">
+                <label for="fitness">Fitness:</label>
+                <input type="range" id="fitness" class="score-slider" min="0" max="10" value="0">
+                <span id="fitnessValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="skills">Skills:</label>
+                <input type="range" id="skills" class="score-slider" min="0" max="10" value="0">
+                <span id="skillsValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="agility">Agility:</label>
+                <input type="range" id="agility" class="score-slider" min="0" max="10" value="0">
+                <span id="agilityValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="speed">Speed:</label>
+                <input type="range" id="speed" class="score-slider" min="0" max="10" value="0">
+                <span id="speedValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="maturity">Maturity:</label>
+                <input type="range" id="maturity" class="score-slider" min="0" max="10" value="0">
+                <span id="maturityValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="intelligence">Intelligence:</label>
+                <input type="range" id="intelligence" class="score-slider" min="0" max="10" value="0">
+                <span id="intelligenceValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="coachable">Coachable:</label>
+                <input type="range" id="coachable" class="score-slider" min="0" max="10" value="0">
+                <span id="coachableValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="dPosition">D Position:</label>
+                <input type="range" id="dPosition" class="score-slider" min="0" max="10" value="0">
+                <span id="dPositionValue">0</span>
+            </div>
+            <div class="slider-group">
+                <label for="tackling">Tackling:</label>
+                <input type="range" id="tackling" class="score-slider" min="0" max="10" value="0">
+                <span id="tacklingValue">0</span>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <select id="playerList" class="player-select">
+                <option value="">Select a Player</option>
+            </select>
+            <canvas id="radarChart" width="800" height="800"></canvas>
+            <textarea id="comments" placeholder="Enter comments here..."></textarea>
+            <button id="downloadChart">Download Chart</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Powered by Give it a Try</p>
+        <img src="https://drive.google.com/uc?export=view&id=1PhRam7mtIuN0Erz7qivtWhnLq6hrpyWM" alt="Logo" class="footer-logo" />
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="scripts_radarsliders2.js"></script>
+</body>
+</html>
