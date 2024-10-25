@@ -1,18 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Initialize event listeners
     document.getElementById('downloadChart').addEventListener('click', downloadChart);
     document.getElementById('savePlayer').addEventListener('click', savePlayerData);
     document.getElementById('playerList').addEventListener('change', loadPlayerData);
 
-    // Radar chart initialization
     const ctx = document.getElementById('radarChart').getContext('2d');
     const data = {
         labels: ['Fitness', 'Skills', 'Agility', 'Speed', 'Maturity', 'Intelligence', 'Coachable', 'D Position', 'Tackling'],
         datasets: [{
             label: 'Player Evaluation',
-            data: [0, 0, 0, 0, 0, 0, 0, 0, 0],  // Initial empty values
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0],
             fill: true,
-            backgroundColor: 'rgba(51, 51, 51, 0.2)',  // Slightly transparent
+            backgroundColor: 'rgba(51, 51, 51, 0.2)',
             borderColor: '#C8A563',
             pointBackgroundColor: '#C8A563',
             pointBorderColor: '#fff',
@@ -25,15 +23,13 @@ document.addEventListener("DOMContentLoaded", function () {
         type: 'radar',
         data: data,
         options: {
-            elements: {
-                line: { borderWidth: 3 }
-            },
+            elements: { line: { borderWidth: 3 } },
             scales: {
                 r: {
                     angleLines: { display: true },
                     suggestedMin: 0,
                     suggestedMax: 10,
-                    ticks: { display: false }  // No numerical axis values displayed
+                    ticks: { display: false }
                 }
             }
         }
@@ -41,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const radarChart = new Chart(ctx, config);
 
-    // Update chart based on slider input values
     function updateChart() {
         const scores = [
             parseInt(document.getElementById('fitness').value) || 0,
@@ -66,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Save player data to localStorage
     function savePlayerData() {
         const playerName = document.getElementById('playerName').value;
         const evaluationDate = document.getElementById('evaluationDate').value;
@@ -85,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
         showFeedbackMessage('Player data saved successfully.');
     }
 
-    // Load player data from localStorage
     function loadPlayerData() {
         const playerName = document.getElementById('playerList').value;
         if (!playerName) {
@@ -104,24 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function setSliderValues(scores) {
-        document.getElementById('fitness').value = scores[0];
-        document.getElementById('fitnessValue').textContent = scores[0];
-        document.getElementById('skills').value = scores[1];
-        document.getElementById('skillsValue').textContent = scores[1];
-        document.getElementById('agility').value = scores[2];
-        document.getElementById('agilityValue').textContent = scores[2];
-        document.getElementById('speed').value = scores[3];
-        document.getElementById('speedValue').textContent = scores[3];
-        document.getElementById('maturity').value = scores[4];
-        document.getElementById('maturityValue').textContent = scores[4];
-        document.getElementById('intelligence').value = scores[5];
-        document.getElementById('intelligenceValue').textContent = scores[5];
-        document.getElementById('coachable').value = scores[6];
-        document.getElementById('coachableValue').textContent = scores[6];
-        document.getElementById('dPosition').value = scores[7];
-        document.getElementById('dPositionValue').textContent = scores[7];
-        document.getElementById('tackling').value = scores[8];
-        document.getElementById('tacklingValue').textContent = scores[8];
+        const sliderIds = ['fitness', 'skills', 'agility', 'speed', 'maturity', 'intelligence', 'coachable', 'dPosition', 'tackling'];
+        sliderIds.forEach((id, index) => {
+            document.getElementById(id).value = scores[index];
+            document.getElementById(id + 'Value').textContent = scores[index];
+        });
     }
 
     function loadPlayerList() {
@@ -137,44 +117,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Display feedback message
     function showFeedbackMessage(message) {
         const feedbackMessage = document.getElementById('feedbackMessage');
         feedbackMessage.textContent = message;
-        setTimeout(() => {
-            feedbackMessage.textContent = '';
-        }, 3000);
+        setTimeout(() => feedbackMessage.textContent = '', 3000);
     }
 
-    // Send data to the Make.com webhook
     function sendDataToMakeWebhook(data) {
         fetch('https://hook.us2.make.com/295f6brvn2a3vev3q5uplecoxm4a2ijv', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
-        })
-        .then(response => {
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                return response.json();
-            } else {
-                return response.text();
-            }
-        })
-        .then(data => {
-            console.log('Success:', data);
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+        }).then(response => response.ok ? response.json() : response.text())
+        .catch(error => console.error('Error:', error));
     }
 
-    // Download chart as PDF
     function downloadChart() {
         const playerName = document.getElementById('playerName').value.trim();
-        const evaluationDate = document.getElementById('evaluationDate').value;
+        const evaluationDate = document.getElementById('evaluationDate').value || 'MM/DD/YYYY';
         const data = {
             playerName: playerName,
             evaluationDate: evaluationDate,
@@ -196,50 +156,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const { jsPDF } = window.jspdf;
 
         const pdf = new jsPDF('p', 'pt', 'a4');
+        pdf.setFillColor(51, 51, 51);
+        pdf.rect(0, 0, pdf.internal.pageSize.width, 60, 'F');
+        pdf.setTextColor(200, 165, 99);
+        pdf.setFont('Times', 'bold');
+        pdf.setFontSize(24);
+        const playerTitle = `${evaluationDate} - ${playerName}`;
+        pdf.text(playerTitle, pdf.internal.pageSize.width / 2, 40, { align: 'center' });
 
-     // Banner Styling - Now only showing player name and date
-     pdf.setFillColor(51, 51, 51); // Dark background color for banner
-     pdf.rect(0, 0, pdf.internal.pageSize.width, 60, 'F'); // Draw the banner
-     pdf.setTextColor(200, 165, 99); // Set text color to gold to match branding
-     pdf.setFont('Times', 'bold');
-     pdf.setFontSize(24);
- 
-     // Center the player name and date on the banner
-     const playerTitle = `${evaluationDate} - ${playerName}`;
-     pdf.text(playerTitle, pdf.internal.pageSize.width / 2, 40, { align: 'center' });
-
-        // Ui Element Handling (hide elements for screenshot)
-        const playerNameInput = document.getElementById('playerName');
-        const commentsTextArea = document.getElementById('comments');
-        const downloadButton = document.getElementById('downloadChart');
-        const playerListDropdown = document.getElementById('playerList');
-
-        playerNameInput.style.display = 'none';
-        commentsTextArea.style.display = 'none';
-        downloadButton.style.display = 'none';
-        playerListDropdown.style.display = 'none';
-
-        // Capture the right section for the chart
         html2canvas(rightSection).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
+            pdf.addImage(imgData, 'PNG', 40, 120, 500, 500);
 
-            playerNameInput.style.display = '';
-            commentsTextArea.style.display = '';
-            downloadButton.style.display = '';
-            playerListDropdown.style.display = '';
-
-            const formattedDate = evaluationDate || 'MM/DD/YYYY';
-            const playerTitle = `${formattedDate} ${playerName}`;
-
-            pdf.setFont('Times', 'bold');
-            pdf.setFontSize(24);
-            pdf.text(playerTitle, pdf.internal.pageSize.width / 2, 40, { align: 'center' });
-            pdf.addImage(imgData, 'PNG', 40, 80, 500, 500);
-
-            const sliderLabels = [
-                'Fitness', 'Skills', 'Agility', 'Speed',
-                'Maturity', 'Intelligence', 'Coachable', 'D Position', 'Tackling'
-            ];
+            const sliderLabels = ['Fitness', 'Skills', 'Agility', 'Speed', 'Maturity', 'Intelligence', 'Coachable', 'D Position', 'Tackling'];
             const sliderValues = [
                 document.getElementById('fitness').value,
                 document.getElementById('skills').value,
@@ -254,46 +183,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
             pdf.setFont('Times', 'normal');
             pdf.setFontSize(12);
-
-            let sliderYPosition = 600;
+            pdf.setTextColor(0, 0, 0);
+            let sliderYPosition = 650;
             for (let i = 0; i < sliderLabels.length; i++) {
                 pdf.text(`${sliderLabels[i]}: ${sliderValues[i]}`, 40, sliderYPosition);
                 sliderYPosition += 15;
             }
 
-            const comments = commentsTextArea.value;
-            const commentsX = 40;
-            sliderYPosition += 20;
+            const commentsText = document.getElementById('comments').value;
+            const commentsX = 300;
+            const commentsY = 650;
 
-            wrapTextPDF(pdf, comments, commentsX, sliderYPosition, 500, 15);
+            pdf.setDrawColor(0);
+            pdf.rect(commentsX, commentsY - 10, 200, 100);
+            pdf.text('Comments:', commentsX + 10, commentsY);
+            pdf.setFont('Times', 'italic');
+            pdf.text(commentsText, commentsX + 10, commentsY + 20);
 
-            // Add footer with logo to PDF
             pdf.setFont('Times', 'italic');
             pdf.setFontSize(10);
             pdf.text('Powered by Give it a Try', 40, pdf.internal.pageSize.height - 40);
 
             pdf.save(`${playerTitle}-evaluation.pdf`);
         });
-    }
-
-    function wrapTextPDF(doc, text, x, y, maxWidth, lineHeight) {
-        const words = text.split(' ');
-        let line = '';
-
-        words.forEach((word, index) => {
-            const testLine = line + word + ' ';
-            const testWidth = doc.getTextWidth(testLine);
-
-            if (testWidth > maxWidth && index > 0) {
-                doc.text(x, y, line);
-                line = word + ' ';
-                y += lineHeight;
-            } else {
-                line = testLine;
-            }
-        });
-
-        doc.text(x, y, line);
     }
 
     loadPlayerList();
