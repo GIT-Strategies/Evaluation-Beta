@@ -90,6 +90,42 @@ body {
     margin-top: 20px;
 }
 
+/* Sliders Styling */
+input[type="range"] {
+    -webkit-appearance: none; /* For Chrome, Safari */
+    -moz-appearance: none;    /* For Firefox */
+    appearance: none;         /* Standard property */
+    width: 100%;
+    height: 8px;
+    background: #ddd; /* Gray background for slider */
+    border-radius: 5px; /* Rounded corners for the slider track */
+    outline: none;
+    border: 2px solid #333333; /* Border color to match branding */
+}
+
+/* Change the thumb (slider button) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* For Chrome, Safari */
+    appearance: none;         /* Standard property */
+    width: 20px;
+    height: 20px;
+    background: #C8A563; /* Gold color for the slider thumb */
+    border-radius: 50%; /* Make the thumb rounded */
+    cursor: pointer;
+    border: 2px solid #333333; /* Dark border for better visibility */
+}
+
+input[type="range"]::-moz-range-thumb {
+    -moz-appearance: none;    /* For Firefox */
+    appearance: none;         /* Standard property */
+    width: 20px;
+    height: 20px;
+    background: #C8A563; /* Gold color for the slider thumb */
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #333333;
+}
+
 /* Center content with uniform padding */
 .center-content {
     text-align: center;
